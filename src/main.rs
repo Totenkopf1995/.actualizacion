@@ -20,7 +20,7 @@ fn main() {
     // Convertir la entrada a un carácter único
     let mut input_char = input.trim().chars().next().expect("No se ingresó ningún caracter");
 
-    // Comparar con caracteres individuales
+    // Comparar con caracteres individuales.
     while input_char != 's' && input_char != 'n' {
         println!("Ingrese 's' para sí o 'n' para no:");
         input.clear();

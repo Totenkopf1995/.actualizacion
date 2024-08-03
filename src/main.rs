@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 mod fecha{
     pub mod imprimir_fecha;
     pub mod leer_fecha;

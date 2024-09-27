@@ -1,4 +1,3 @@
-use rayon::prelude::*;
 
 mod fecha{
     pub mod imprimir_fecha;
@@ -10,29 +9,36 @@ mod os{
     pub mod verificacion_os;
 }
 
-use std::io;
+use std::io::stdin;
 
 fn main() {
 
     let mut input = String::new();
+    let mut input_char;
 
-    println!("Desea Actualizar(s/n): ");
-    io::stdin().read_line(&mut input).expect("Error al leer la entrada");
+    loop {
+        println!("Desea Actualizar(s/n): ");
 
-    // Convertir la entrada a un carácter único
-    let mut input_char = input.trim().chars().next().expect("No se ingresó ningún caracter");
+        match stdin().read_line(&mut input){
+            Ok(_) => {
+                input_char = input.trim().chars().next().expect("No se ingresó ningún caracter");
 
-    // Comparar con caracteres individuales.
-    while input_char != 's' && input_char != 'n' {
-        println!("Ingrese 's' para sí o 'n' para no:");
+                if input_char == 's' || input_char == 'n' {
+                    println!("Respuesta válida: {}", input_char);
+                    os::verificacion_os::verificacion_os();
+                    fecha::imprimir_fecha::imprimir_fecha();
+                    break; // Salir del bucle si la entrada es válida
+                } else {
+                    println!("Entrada no válida. Ingrese 's' para sí o 'n' para no.");
+                }
+            }
+            Err(error) => {
+                eprintln!("Error al leer la entrada: {}", error);
+                return;
+            }
+        }
         input.clear();
-        io::stdin().read_line(&mut input).expect("Error al leer la entrada");
-        input_char = input.trim().chars().next().expect("No se ingresó ningún caracter");
     }
-
-    println!("Respuesta válida: {}", input_char);
-    os::verificacion_os::verificacion_os();
-    fecha::imprimir_fecha::imprimir_fecha();
 }
 
 

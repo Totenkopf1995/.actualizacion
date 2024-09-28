@@ -1,23 +1,43 @@
-use std::{env, fs};
+use std::{env, fs, process::Command};
 
 pub(crate) fn verificacion_os() -> &'static str {
-
     let os = env::consts::OS;
-    let contents = fs::read_to_string("/etc/os-release")
-        .expect("Algo salió mal al leer el archivo");
+
+    // Intentar leer el archivo /etc/os-release
+    let contents = fs::read_to_string("/etc/os-release").ok();
 
     match os {
         "android" => "android",
         "linux" => {
-            if contents.contains("ubuntu") {
-                "ubuntu"
-            } else if contents.contains("debian") {
-                "debian"
-            } else if contents.contains("fedora") {
-                "fedora"
+            if let Some(contents) = contents {
+                if contents.contains("ubuntu") {
+                    "ubuntu"
+                } else if contents.contains("debian") {
+                    "debian"
+                } else if contents.contains("fedora") {
+                    "fedora"
+                } else {
+                    println!("No estoy seguro de qué distribución de Linux estás ejecutando.");
+                    "linux" // Devuelve un valor por defecto
+                }
             } else {
-                println!("No estoy seguro de qué distribución de Linux estás ejecutando.");
-                "linux" // Devuelve un valor por defecto
+                // Si no se puede leer el archivo, ejecutar uname -a para verificar
+                println!("No se pudo leer /etc/os-release. Ejecutando uname -a...");
+
+                let output = Command::new("uname")
+                    .arg("-a")
+                    .output()
+                    .expect("Error al ejecutar uname");
+
+                let output_str = String::from_utf8_lossy(&output.stdout);
+
+                // Verificar si la salida contiene información que sugiera Android
+                if output_str.contains("Android") {
+                    "android"
+                } else {
+                    println!("No se pudo determinar la distribución. Salida de uname: {}", output_str);
+                    "linux" // Devuelve un valor por defecto
+                }
             }
         },
         _ => {

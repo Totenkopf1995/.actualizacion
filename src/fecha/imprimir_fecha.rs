@@ -1,10 +1,9 @@
+use chrono::{DateTime, Local};
 use std::env;
 use std::fs::File;
 use std::io::{self, Write};
-use chrono::{DateTime, Local};
 
 pub(crate) fn imprimir_fecha() -> io::Result<()> {
-
     // Obtener la ruta al directorio home
     let home_dir = env::var("HOME").expect("No se pudo obtener el directorio home");
     let nombre_archivo = format!("{}/.fecha.txt", home_dir);
@@ -19,7 +18,8 @@ pub(crate) fn imprimir_fecha() -> io::Result<()> {
     let hora_str = hora.to_string();
 
     // Escribir la cadena en el archivo
-    file.write_all(hora_str.as_bytes()).expect("Error al escribir en el archivo");
+    file.write_all(hora_str.as_bytes())
+        .expect("Error al escribir en el archivo");
 
     Ok(()) // todo salió bien
 }

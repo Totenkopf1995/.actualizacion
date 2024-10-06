@@ -1,9 +1,9 @@
+use crate::os::verificacion_os::verificacion_os;
+use colour::{blue_ln, e_red_ln, green_ln};
 use std::io::{BufRead, BufReader};
 use std::process::{Command, Stdio};
 use std::thread::sleep;
 use std::time::Duration;
-use colour::{blue_ln, e_red_ln, green_ln};
-use crate::os::verificacion_os::verificacion_os;
 
 pub(crate) fn comandos_os() {
     let sistema = verificacion_os();
@@ -17,7 +17,7 @@ pub(crate) fn comandos_os() {
             execute_command("pkg", &["remove", "-y"]);
             execute_command("pkg", &["autoclean"]);
             execute_command("pkg", &["clean"]);
-        },
+        }
         "ubuntu" | "debian" => {
             execute_command("sudo", &["apt", "update"]);
             execute_command("sudo", &["apt", "upgrade", "-y"]);
@@ -25,13 +25,13 @@ pub(crate) fn comandos_os() {
             execute_command("sudo", &["apt", "remove", "-y"]);
             execute_command("sudo", &["apt", "autoclean"]);
             execute_command("sudo", &["apt", "clean"]);
-        },
+        }
         "fedora" => {
             execute_command("sudo", &["dnf", "upgrade", "--refresh"]);
             execute_command("sudo", &["dnf", "install", "dnf-plugin-system-upgrade"]);
             execute_command("sudo", &["dnf", "autoremove", "-y"]);
             execute_command("sudo", &["dnf", "clean", "all"]);
-        },
+        }
         _ => {
             e_red_ln!("error: sistema operativo no soportado");
         }
@@ -70,7 +70,7 @@ fn execute_command(command: &str, args: &[&str]) {
 
             // Esperar a que el proceso termine
             let _ = child.wait().expect("El proceso no pudo terminar");
-        },
+        }
         Err(e) => {
             e_red_ln!("Error al ejecutar {}: {}", command, e);
         }

@@ -1,12 +1,11 @@
+use crate::fecha::imprimir_fecha::imprimir_fecha;
+use colour::yellow_ln;
 use std::fs::File;
-use std::{env, io};
 use std::io::{BufReader, Read};
 use std::path::Path;
-use colour::yellow_ln;
-use crate::fecha::imprimir_fecha::imprimir_fecha;
+use std::{env, io};
 
 pub(crate) fn leer_fecha() -> io::Result<()> {
-
     // Obtener la ruta al directorio home
     let home_dir = env::var("HOME").expect("No se pudo obtener el directorio home");
     let _nombre_archivo = format!("{}/.fecha.txt", home_dir);

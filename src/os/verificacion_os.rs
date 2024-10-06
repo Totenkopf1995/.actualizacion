@@ -1,5 +1,5 @@
-use std::{env, fs, process::Command};
 use colour::{e_red_ln, green_ln};
+use std::{env, fs, process::Command};
 
 pub(crate) fn verificacion_os() -> &'static str {
     let os = env::consts::OS;
@@ -36,11 +36,14 @@ pub(crate) fn verificacion_os() -> &'static str {
                 if output_str.contains("Android") {
                     "android"
                 } else {
-                    green_ln!("No se pudo determinar la distribución. Salida de uname: {}", output_str);
+                    green_ln!(
+                        "No se pudo determinar la distribución. Salida de uname: {}",
+                        output_str
+                    );
                     "linux" // Devuelve un valor por defecto
                 }
             }
-        },
+        }
         _ => {
             e_red_ln!("No estoy seguro de qué sistema operativo estás ejecutando.");
             "desconocido" // Devuelve un valor por defecto

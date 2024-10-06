@@ -2,6 +2,7 @@ use std::fs::File;
 use std::{env, io};
 use std::io::{BufReader, Read};
 use std::path::Path;
+use colour::yellow_ln;
 use crate::fecha::imprimir_fecha::imprimir_fecha;
 
 pub(crate) fn leer_fecha() -> io::Result<()> {
@@ -19,7 +20,7 @@ pub(crate) fn leer_fecha() -> io::Result<()> {
 
         buf_reader.read_to_string(&mut contenido)?; //lee el contenido
 
-        println!("Fecha de la ultima actualizacion: {}", contenido);
+        yellow_ln!("Fecha de la ultima actualizacion: {}", contenido);
     }
     Ok(()) //todo salió bien
 }

@@ -2,12 +2,13 @@ use std::io::{BufRead, BufReader};
 use std::process::{Command, Stdio};
 use std::thread::sleep;
 use std::time::Duration;
+use colour::{blue_ln, e_red_ln, green_ln};
 use crate::os::verificacion_os::verificacion_os;
 
 pub(crate) fn comandos_os() {
     let sistema = verificacion_os();
-    println!("Distribucion: {}", verificacion_os());
-    println!("Actualizando.......");
+    blue_ln!("Distribucion: {}", verificacion_os());
+    green_ln!("Actualizando.......");
 
     match sistema {
         "android" => {
@@ -32,7 +33,7 @@ pub(crate) fn comandos_os() {
             execute_command("sudo", &["dnf", "clean", "all"]);
         },
         _ => {
-            println!("error: sistema operativo no soportado");
+            e_red_ln!("error: sistema operativo no soportado");
         }
     }
 }
@@ -54,7 +55,7 @@ fn execute_command(command: &str, args: &[&str]) {
             for line in reader.lines() {
                 match line {
                     Ok(line) => println!("{}", line),
-                    Err(e) => eprintln!("Error leyendo stdout: {}", e),
+                    Err(e) => e_red_ln!("Error leyendo stdout: {}", e),
                 }
             }
 
@@ -63,7 +64,7 @@ fn execute_command(command: &str, args: &[&str]) {
             for line in reader_err.lines() {
                 match line {
                     Ok(line) => eprintln!("{}", line),
-                    Err(e) => eprintln!("Error leyendo stderr: {}", e),
+                    Err(e) => e_red_ln!("Error leyendo stderr: {}", e),
                 }
             }
 
@@ -71,7 +72,7 @@ fn execute_command(command: &str, args: &[&str]) {
             let _ = child.wait().expect("El proceso no pudo terminar");
         },
         Err(e) => {
-            eprintln!("Error al ejecutar {}: {}", command, e);
+            e_red_ln!("Error al ejecutar {}: {}", command, e);
         }
     }
 

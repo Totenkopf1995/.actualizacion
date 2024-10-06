@@ -1,4 +1,5 @@
 use std::{env, fs, process::Command};
+use colour::{e_red_ln, green_ln};
 
 pub(crate) fn verificacion_os() -> &'static str {
     let os = env::consts::OS;
@@ -17,12 +18,12 @@ pub(crate) fn verificacion_os() -> &'static str {
                 } else if contents.contains("fedora") {
                     "fedora"
                 } else {
-                    println!("No estoy seguro de qué distribución de Linux estás ejecutando.");
+                    e_red_ln!("No estoy seguro de qué distribución de Linux estás ejecutando.");
                     "linux" // Devuelve un valor por defecto
                 }
             } else {
                 // Si no se puede leer el archivo, ejecutar uname -a para verificar
-                println!("No se pudo leer /etc/os-release. Ejecutando uname -a...");
+                green_ln!("No se pudo leer /etc/os-release. Ejecutando uname -a...");
 
                 let output = Command::new("uname")
                     .arg("-a")
@@ -35,13 +36,13 @@ pub(crate) fn verificacion_os() -> &'static str {
                 if output_str.contains("Android") {
                     "android"
                 } else {
-                    println!("No se pudo determinar la distribución. Salida de uname: {}", output_str);
+                    green_ln!("No se pudo determinar la distribución. Salida de uname: {}", output_str);
                     "linux" // Devuelve un valor por defecto
                 }
             }
         },
         _ => {
-            println!("No estoy seguro de qué sistema operativo estás ejecutando.");
+            e_red_ln!("No estoy seguro de qué sistema operativo estás ejecutando.");
             "desconocido" // Devuelve un valor por defecto
         }
     }

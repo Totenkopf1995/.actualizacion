@@ -10,6 +10,7 @@ mod os{
 }
 
 use std::io::stdin;
+use colour::{blue_ln, dark_magenta_ln, e_red_ln, green_ln, red_ln};
 use crate::fecha::imprimir_fecha::imprimir_fecha;
 use crate::fecha::leer_fecha::leer_fecha;
 use crate::os::comandos_os::comandos_os;
@@ -22,7 +23,7 @@ fn main() {
     leer_fecha().expect("error al leer fecha"); //llama al archivo leer_fecha.rs
 
     loop {
-        println!("Desea Actualizar(s/n): ");
+        dark_magenta_ln!("Desea Actualizar(s/n): ");
 
         match stdin().read_line(&mut input){
             Ok(_) => {
@@ -30,20 +31,22 @@ fn main() {
 
                 // validacion de caracter
                 if input_char == 's' || input_char == 'n' {
-                    println!("Respuesta válida: {}", input_char);
+                    //println!("Respuesta válida: {}", input_char);
                     if input_char == 's' {
+                        green_ln!("Se Actualizara");
                         comandos_os(); //llama al archivo comando_os.rs si la entrada es 's'
                         imprimir_fecha().unwrap(); //llama al archivo imprimir_fecha.rs para indicar la fecha de la actualizacion
                         break;
                     }else {
+                        blue_ln!("No se actualizara");
                         break; //Salir del bucle si la entrada es 'n'
                     }
                 } else {
-                    println!("Entrada no válida. Ingrese 's' para sí o 'n' para no.");
+                    red_ln!("Entrada no válida. Ingrese 's' para sí o 'n' para no.");
                 }
             }
             Err(error) => {
-                eprintln!("Error al leer la entrada: {}", error);
+                e_red_ln!("Error al leer la entrada: {}", error);
                 return;
             }
         }

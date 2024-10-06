@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.37"
+colour = "2.1.0"
 rayon = "1.10.0"
